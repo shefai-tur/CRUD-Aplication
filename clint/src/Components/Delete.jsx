@@ -1,6 +1,6 @@
 import React from "react";
 
-const Delete = () => {
+const Delete = ({ handelDeleteSubmit }) => {
   return (
     <div role="alert" className="alert">
       <svg
@@ -21,12 +21,15 @@ const Delete = () => {
         <div className="modal-action">
           <form method="dialog">
             {/* if there is a button, it will close the modal */}
-            <button className="btn-sm">Cencel</button>
+            <button className="btn btn-sm">Cencel</button>
+            <button
+              onClick={handelDeleteSubmit}
+              className="btn btn-sm btn-error"
+            >
+              Delete
+            </button>
           </form>
-          <button className="btn btn-sm btn-error">Delete</button>
-
         </div>
-
       </div>
     </div>
   );

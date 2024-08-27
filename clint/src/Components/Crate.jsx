@@ -93,7 +93,7 @@ const Crate = () => {
           {/* if there is a button, it will close the modal */}
           <button className="btn btn-sm">Cencel</button>
           <button  onClick={handaleSubmit}  className="btn btn-sm btn-info ">
-          Update
+          Submit
         </button>
         </form>
        

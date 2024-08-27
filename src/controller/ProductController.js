@@ -50,30 +50,29 @@ exports.UpdateProduct = async (req, res) => {
       req.body,
       { new: true }
     );
-    if(!upProdauct){
-        res.status(404).json({succes:false,massage:"Product Not Update"})
+    if (!upProdauct) {
+      res.status(404).json({ succes: false, massage: "Product Not Update" });
     }
-    res.status(200).json({succes:true,upProdauct})
+    res
+      .status(200)
+      .json({ succes: true, massage: "Product Update succses", upProdauct });
   } catch (error) {
     console.log(error);
-    res.status(400).json({succes:false,massage:"Internal server Error"})
-    
+    res.status(400).json({ succes: false, massage: "Internal server Error" });
   }
 };
 //D = Delete
 
-exports.DeleteProduct = async(req, res) => {
-try {
-    const PdId = req.params.id
- const deletedProduct = await ProductsModel.findByIdAndDelete(PdId)
- if(!deletedProduct){
-    res.status(404).json({succes:false,massage:"Product id Not Found"})
- }
- res.status(200).json({succes:true,massage:"Delte sucsses"})
-} catch (error) {
- console.log(error);
- res.status(400).json({succes:false,massage:"internal server eror"})
-    
-}
-
+exports.DeleteProduct = async (req, res) => {
+  try {
+    const PdId = req.params.id;
+    const deletedProduct = await ProductsModel.findByIdAndDelete(PdId);
+    if (!deletedProduct) {
+      res.status(404).json({ succes: false, massage: "Product id Not Found" });
+    }
+    res.status(200).json({ succes: true, massage: "Delte sucsses" });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ succes: false, massage: "internal server eror" });
+  }
 };

@@ -1,13 +1,28 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaCirclePlus } from "react-icons/fa6";
 import { MdDeleteForever } from "react-icons/md";
 import { IoMdCloseCircle } from "react-icons/io";
 
 import { FaEdit } from "react-icons/fa";
-import Delete from "../Components/Delete";
-import Crate from "../Components/Crate";
-import Update from "../Components/Update";
-const HomePage = () => {
+
+import axios from "axios";
+const HomePage = ({ productId, deleteProductID }) => {
+  let [data, setData] = useState([]);
+  useEffect(() => {
+    try {
+      async function fatcheData(params) {
+        const fatchProduct = await axios.get(
+          "http://localhost:5000/api/v1/ReadProduct"
+        );
+        const response = fatchProduct.data.product;
+        setData(response);
+      }
+      fatcheData();
+    } catch (error) {
+      console.log(error);
+    }
+  }, [data]);
+
   return (
     <div className="container mx-auto">
       <div className="overflow-x-auto">
@@ -17,19 +32,13 @@ const HomePage = () => {
           {/* You can open the modal using document.getElementById('ID').showModal() method */}
           <button
             className="btn"
-            onClick={() => document.getElementById("my_modal_5").showModal()}
+            onClick={() => document.getElementById("my_modal_6").showModal()}
           >
             <div className=" text-white flex bg-slate-600 p-3 ">
               <FaCirclePlus className="mt-1 mr-1" />
               <p> Add New Products</p>
             </div>
           </button>
-
-          <dialog id="my_modal_5" className="modal">
-            <div className="modal-box w-11/12 max-w-5xl">
-              <Crate />
-            </div>
-          </dialog>
         </div>
         <table className="table  ">
           {/* head */}
@@ -40,52 +49,49 @@ const HomePage = () => {
               <th>Unit Price</th>
               <th>Qty</th>
               <th>Total Price</th>
-              <th>Crated Date</th>
+
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
             {/* row */}
-            <tr className=" bg-slate-600  text-center">
-              <th>1</th>
-              <td>Cy Ganderton</td>
-              <td>Quality Control Specialist</td>
-              <td>Blue</td>
-              <td>Cy Ganderton</td>
-              <td>Quality Control Specialist</td>
-              <td className="flex justify-center gap-3 p-4">
-                {/* You can open the modal using document.getElementById('ID').showModal() method */}
-                <button
-                  className="btn"
-                  onClick={() =>
-                    document.getElementById("my_modal_5").showModal()
-                  }
-                >
-                  <FaEdit className=" text-yellow-400 text-xl" />
-                </button>
+            {data.map((element, index) => {
+              return (
+                <tr className=" bg-slate-600  ">
+                  <th>{element.ProductName}</th>
+                  <td>{element.ProductCode}</td>
+                  <td>{element.UnitPrice}</td>
+                  <td>{element.Qty}</td>
+                  <td>{element.TotalPrice}</td>
 
-                <dialog id="my_modal_5" className="modal">
-                  <div className="modal-box w-11/12 max-w-5xl">
-                    <Update />
-                  </div>
-                </dialog>
-                {/* You can open the modal using document.getElementById('ID').showModal() method */}
-                <button
-                  className="btn"
-                  onClick={() =>
-                    document.getElementById("my_modal_4").showModal()
-                  }
-                >
-                  <MdDeleteForever className=" text-red-600 text-xl" />
-                </button>
+                  <td className="flex gap-3 p-4">
+                    {/* You can open the modal using document.getElementById('ID').showModal() method */}
+                    <div onClick={() => productId(element._id)}>
+                      <button
+                        className="btn"
+                        onClick={() =>
+                          document.getElementById("my_modal_5").showModal()
+                        }
+                      >
+                        <FaEdit className=" text-yellow-400 text-xl" />
+                      </button>
+                    </div>
 
-                <dialog id="my_modal_4" className="modal">
-                  <div className="modal-box w-11/12 max-w-5xl">
-                    <Delete />
-                  </div>
-                </dialog>
-              </td>
-            </tr>
+                    {/* You can open the modal using document.getElementById('ID').showModal() method */}
+                    <div onClick={() => deleteProductID(element._id)}>
+                      <button
+                        className="btn"
+                        onClick={() =>
+                          document.getElementById("my_modal_4").showModal()
+                        }
+                      >
+                        <MdDeleteForever className="  text-red-600 text-xl" />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
